@@ -1,0 +1,12 @@
+Sub clearlink()
+
+    Dim myRange As Range
+    
+    Set myRange = ThisWorkbook.ActiveSheet.Range("C9:C1048567")
+    
+    myRange.Clear
+    
+    MsgBox ("Clear Link Done!!")
+
+End Sub
+

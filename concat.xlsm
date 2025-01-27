@@ -1,0 +1,77 @@
+Sub ConcatenateText()
+    Dim vbDoubleQuote As String
+    Dim i As Long
+    Dim firstRow As Long
+    Dim rowLoopLimit As Long
+    Dim addedQuotes As String
+    Dim columnToWrite As Long
+    Dim columnOfLinks As Long
+    Dim rowToWrite As Long
+    Dim maximumCharInCell As Long
+    Dim countLink As Long
+    Dim mess As String
+    Dim panjang_kata As String
+        
+    
+    maximumCharInCell = 32767 - 1
+    
+    'For writing a double quotes (")
+    vbDoubleQuote = Chr(34)
+    
+    'First row of data
+    firstRow = 9
+    
+    countLink = 0
+    
+    'How much row have to concatenate
+    rowLoopLimit = Cells(2, 2).Value + 8
+    
+    columnToWrite = 4
+    rowToWrite = firstRow
+    columnOfLinks = 3
+    
+    For i = firstRow To rowLoopLimit
+        'concatenate link with quotes and comma
+        addedQuotes = vbDoubleQuote & Cells(i, columnOfLinks).Value & vbDoubleQuote & ","
+        
+        'get string len when concatenate
+        panjang_kata = Len(Cells(rowToWrite, columnToWrite).Value) + Len(addedQuotes)
+        
+        'if concat <= maximum then
+        If panjang_kata <= maximumCharInCell Then
+            
+            'concatenate altered link with another link (different row)
+            panjang_kata = Cells(rowToWrite, columnToWrite).Interior.ColorIndex
+            
+            If Cells(rowToWrite, columnToWrite).Interior.ColorIndex = -4142 Then
+                Cells(rowToWrite, columnToWrite).Interior.ColorIndex = 4
+            End If
+            
+            'concatenate altered link with another link (different row)
+            Cells(rowToWrite, columnToWrite).Value = Cells(rowToWrite, columnToWrite).Value & addedQuotes
+            
+            countLink = countLink + 1
+            
+            If i = rowLoopLimit Then
+                Cells(rowToWrite, columnToWrite + 1).Interior.ColorIndex = 28
+                Cells(rowToWrite, columnToWrite + 1).Value = countLink & " Links"
+                countLink = 0
+            End If
+        Else
+        
+            If Cells(rowToWrite, columnToWrite + 1).Interior.ColorIndex = -4142 Then
+                Cells(rowToWrite, columnToWrite + 1).Interior.ColorIndex = 28
+            End If
+            'write how many link have been concatenate
+            Cells(rowToWrite, columnToWrite + 1).Value = countLink & " Links"
+            countLink = 0
+            
+            i = i - 1
+            
+            rowToWrite = rowToWrite + 1
+        End If
+        
+    Next
+    
+    MsgBox ("Done!")
+End Sub
